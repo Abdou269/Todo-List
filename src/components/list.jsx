@@ -78,7 +78,7 @@ export default function List(){
     }
 
     return render && (
-        <div className={`flex flex-col ${style} bg-black/[.3] p-4 rounded-lg duration-1000`}>
+        <div className={`flex flex-col ${style} bg-black/[.3] p-4 rounded-lg duration-1000 z-10`}>
             <div className='flex items-center justify-between mb-8 mx-4'>
                 <div className='flex items-center gap-4'>
                     {
@@ -163,7 +163,7 @@ function Item({onChange, checked, title, onClick}){
         <div 
             ref={setNodeRef}
             style={transform&&{transform: `translateY(${transform.y}px)`, transition: transition}}
-            className={`flex flex-col justify-center items-center gap-2 w-full active:z-50 active:backdrop-blur-[2px]`}
+            className={`flex flex-col justify-center items-center gap-2 w-full active:z-50`}
         >
             <div className={`flex justify-between items-center p-2 w-11/12 text-lg`} > 
                 <div className='flex items-center gap-4'>

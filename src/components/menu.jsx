@@ -32,6 +32,7 @@ export default function Menu(){
     dispatch({type:'listTitle', value: input.current.value});
     dispatch({type:'addList', value: false});
     dispatch({type:'showDetails', value: false});
+    dispatch({type: 'listDelete', value: false})
     dispatch({type: 'showList', value: true});
     newLists.length == 1 && handleMessage(1, dispatch);
     newLists.length == 2 && handleMessage(0, dispatch);
@@ -40,9 +41,9 @@ export default function Menu(){
   function handleShowList(title){
     dispatch({type: 'listTitle', value: title});
     dispatch({type: 'editTitle', value: false});
-    dispatch({type: 'showList', value: true});
     dispatch({type: 'showDetails', value: false});
     dispatch({type: 'listDelete', value: false})
+    dispatch({type: 'showList', value: true});
     state.listTitle === title && dispatch({type: 'showList', value: !state.showList});
   }
   //drag and drop function for list titles

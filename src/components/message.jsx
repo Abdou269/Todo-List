@@ -21,7 +21,7 @@ export default function Message({ message, duration, showed }){
     return (
         <div 
             className={`absolute ${position} w-max left-1/2 translate-x-[-50%] flex items-center gap-2 w-[40%] border-[#B63AFF] rounded-xl 
-            border-2 bg-black/[.5] backdrop-blur-[2px] px-2 py-1 duration-[1s]`}
+            border-2 bg-black/[.5] backdrop-blur-[2px] px-2 py-1 duration-[1s] z-50`}
         >
             <div className="flex font-extrabold text-[#C86AFF] gap-1 items-center text-lg">
                 <i className="uil uil-info-circle"></i>
