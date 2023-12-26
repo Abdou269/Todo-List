@@ -10,7 +10,7 @@ import Drag from './drag';
 export default function Menu(){
   const {state, dispatch} = useContext(context);
   const [search, setSearch] = useState('');
-  const oldStorage = JSON.parse(localStorage.lists) || [];
+  const oldStorage = JSON.parse(localStorage.lists);
   const searchedLists = search !== '' ? oldStorage.filter(list => list.title.toLowerCase().includes(search.toLowerCase())) : oldStorage;
   const listsTitles = oldStorage.map(list => list.title);
   const color = useRef();

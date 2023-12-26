@@ -25,6 +25,7 @@ const initialState = {
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   //create help messages array in local storage if there isn't
+  localStorage.lists == null && localStorage.setItem('lists', JSON.stringify([]));
   localStorage.tips == null && localStorage.setItem('tips', JSON.stringify(messages));
   //reducer function for variables that are used in all components
   function reducer(state, action){
