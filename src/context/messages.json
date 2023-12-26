@@ -1,0 +1,36 @@
+[
+    {
+        "id": 0,
+        "message": "you can re-order lists by dragging the coloured squares to the position you want",
+        "showed": false,
+        "duration": 10000
+    },
+    {
+        "id": 1,
+        "message": "add tasks and subtasks by writing the title in the form and then hit Enter",
+        "showed": false,
+        "duration": 10000
+    },
+    {
+        "id": 2,
+        "message": "you can drag tasks and subtasks by click and hold on the title and drag to the wanted position",
+        "showed": false,
+        "duration": 10000
+    },
+    {
+        "id": 3,
+        "message": "you can edit subtasks by clicking the pen icon then edit the title and hit enter",
+        "showed": false,
+        "duration": 10000
+    },
+    {
+        "id": 4,
+        "message": "new informations are saved",
+        "duration": 3000
+    },
+    {
+        "id": 5,
+        "message": "the task is deleted",
+        "duration": 3000
+    }
+]
