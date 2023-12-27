@@ -58,10 +58,7 @@ export default function Menu(){
   return (
       <div id="menu" className={`grid grid-rows-4 w-[23%] bg-black/[.3] rounded-lg gap-3 p-4 duration-500`}>
         <div className="flex flex-col gap-4">
-          <div className="flex justify-between items-center row-full">
-            <h1 className="text-lg">to-do list</h1>
-            <i className="fa-solid fa-bars cursor-pointer hover:text-slate-400 duration-200"></i>
-          </div>
+          <h1 className="text-lg">to-do list</h1>
           <div className="flex gap-2 items-center text-gray row-start-2">
             <i className="absolute p-1.5 fa-solid fa-magnifying-glass text-xs"></i>
             <input
