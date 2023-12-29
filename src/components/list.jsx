@@ -8,7 +8,7 @@ import save from '../functions/save';
 import Drag from './drag';
 
 export default function List(){
-    const {state, dispatch} = useContext(context);
+    const {state, dispatch, width} = useContext(context);
     const [info, setInfo] = useState({listTitle: '', taskTitle: ''});
     const [style, setStyle] = useState('w-[20%] opacity-0');
     const [render, setRender] = useState(false);
@@ -22,7 +22,11 @@ export default function List(){
         if (state.showList) {
             setRender(true);
             const show = setTimeout(_=>{
-                state.showDetails ? setStyle(`w-[51%] opacity-1`) : setStyle(`w-[70%] opacity-1`);
+                state.showDetails ? 
+                (width < 1024 ? setStyle(`w-[60%] opacity-1`) : setStyle(`w-[51%] opacity-1`))
+                : 
+                (width < 1024 ? setStyle(`w-[90%] opacity-1`) : setStyle(`w-[70%] opacity-1`));
+                width <= 768 && setStyle('w-full opacity-1');
                 clearTimeout(show);
             }, 100)
         }
@@ -30,8 +34,15 @@ export default function List(){
             setStyle('w-[20%] opacity-0');
             hide = setTimeout(_=> setRender(false), 800);
         }
+        width <= 768 && (
+            state.menuShrink && !state.showDetails ? 
+            dispatch({type: 'showList', value: true}) 
+            :
+            dispatch({type: 'showList', value: false})
+        )
+        
         return _=> clearTimeout(hide);
-    }, [state.showDetails, state.showList, style])
+    }, [dispatch, state.menuShrink, state.showDetails, state.showList, style, width])
     //edit list title
     function handleEditList(){
         const newStorage = oldStorage.map(list => list.title === state.listTitle ? {...list, title: info.listTitle} : list);
@@ -78,7 +89,7 @@ export default function List(){
     }
 
     return render && (
-        <div className={`flex flex-col ${style} bg-black/[.3] p-4 rounded-lg duration-1000 z-10`}>
+        <div className={`flex flex-col ${style} bg-black/[.3] p-4 rounded-lg duration-1000 z-10  max-md:text-xs`}>
             <div className='flex items-center justify-between mb-8 mx-4'>
                 <div className='flex items-center gap-4'>
                     {
@@ -97,13 +108,14 @@ export default function List(){
                         className={`${state.editTitle && 'text-green-500'} fa-solid fa-pen-to-square hover:text-green-500 duration-200 cursor-pointer`}
                     >
                     </i>
+                    
                     <h1 className='flex justify-center items-center rounded-sm bg-black/[.3] m-1 rounded-lg px-1'>
                         { tasks.length }
                     </h1>
                 </div>
                 {
                     state.listDelete ? 
-                    <div className="flex gap-2 items-center">
+                    <div className="flex gap-2 items-center ">
                         <p>sure you want to delete the list ? </p>
                         <div 
                         onClick={handleDeleteList} 
@@ -125,6 +137,7 @@ export default function List(){
                     >
                     </i>
                 }
+                
             </div>
             <div className='flex flex-col gap-4 items-center'>
                 <input 
@@ -135,7 +148,7 @@ export default function List(){
                     placeholder='+ add a new task'
                 />
             </div>
-            <div className={`flex flex-col items-center gap-4 overflow-y-auto overflow-x-hidden m-4 mx-5`}>
+            <div className={`flex flex-col items-center gap-4 overflow-y-auto overflow-x-hidden m-4 md:mx-5`}>
                 <Drag items={tasksTitles} handleDragEnd={e=>handleDragEnd(e)}>
                     {
                         tasks.map((task, index) => {
@@ -165,7 +178,7 @@ function Item({onChange, checked, title, onClick}){
             style={transform&&{transform: `translateY(${transform.y}px)`, transition: transition}}
             className={`flex flex-col justify-center items-center gap-2 w-full active:z-50`}
         >
-            <div className={`flex justify-between items-center p-2 w-11/12 text-lg`} > 
+            <div className={`flex justify-between items-center p-2 w-11/12 `} > 
                 <div className='flex items-center gap-4'>
                     <input 
                         className="h-[18px] w-[18px]" 

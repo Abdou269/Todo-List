@@ -10,6 +10,7 @@ import { useReducer } from "react";
 const initialState = {
   message: '',
   listTitle: '',
+  menuShrink: false,
   editTitle: false,
   addList: false,
   showList: false,
@@ -24,7 +25,8 @@ const initialState = {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  //create help messages array in local storage if there isn't
+  const width = window.innerWidth;
+  //creating the lists and messages for the project
   localStorage.lists == null && localStorage.setItem('lists', JSON.stringify([]));
   localStorage.tips == null && localStorage.setItem('tips', JSON.stringify(messages));
   //reducer function for variables that are used in all components
@@ -34,6 +36,8 @@ export default function App() {
         return {...state, message: action.value};
       case 'listTitle':
         return {...state, listTitle: action.value};
+      case 'menuShrink':
+        return {...state, menuShrink: action.value};
       case 'editTitle':
         return {...state, editTitle: action.value};
       case 'addList' : 
@@ -51,7 +55,7 @@ export default function App() {
   return (
     <>
         <div className="flex gap-4 w-full h-[100vh] bg-gradient-to-r from-[#F24B46] to-[#8224B8] text-white p-4 overflow-hidden">
-          <context.Provider value={{state, dispatch}}>
+          <context.Provider value={{state, dispatch, width}}>
             <Message 
               key={state.message.id} 
               message={state.message.message} 

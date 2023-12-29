@@ -20,14 +20,14 @@ export default function Message({ message, duration, showed }){
 
     return (
         <div 
-            className={`absolute ${position} w-max left-1/2 translate-x-[-50%] flex items-center gap-2 w-[40%] border-[#B63AFF] rounded-xl 
+            className={`flex md:w-max text-center max-sm:flex-col absolute ${position} left-1/2 translate-x-[-50%] items-center gap-2 border-[#B63AFF] rounded-xl 
             border-2 bg-black/[.5] backdrop-blur-[2px] px-2 py-1 duration-[1s] z-50`}
         >
-            <div className="flex font-extrabold text-[#C86AFF] gap-1 items-center text-lg">
+            <div className="flex font-extrabold text-[#C86AFF] max-sm:text-sm gap-1 items-center text-lg">
                 <i className="uil uil-info-circle"></i>
-                <p className="inline">note:</p>
+                <p className="inline-block">note:</p>
             </div>
-            <div className="flex font-medium text-sm"> { message } </div>
+            <div className="inline font-medium sm:text-sm max-[640px]:text-xs"> { message } </div>
         </div>
     )
 }

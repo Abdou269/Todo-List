@@ -8,7 +8,7 @@ import save from '../functions/save';
 import Drag from './drag';
 
 export default function Details(){
-    const {state, dispatch} = useContext(context);
+    const {state, dispatch, width} = useContext(context);
     const [value, setValue] = useState('');
     const [editSubtask, setEditSubtask] = useState(false);
     const [subtaskIndex, setSubtaskindex] = useState(null);
@@ -26,16 +26,19 @@ export default function Details(){
         if (state.showDetails){
             setRender(true);
             const show = setTimeout(_=>{
-                setStyle('w-[23%] opacity-1');
+                width <= 768 ? 
+                setStyle('w-full opacity-1') 
+                :
+                (width <= 1024 ? setStyle('w-[30%] opacity-1') : setStyle('w-[23%] opacity-1'));
                 clearTimeout(show);
             }, 100)
         }
         else {
             setStyle('w-[0%] opacity-0');
-            hide = setTimeout(_=>setRender(false), 1000)
+            hide = setTimeout(_=> setRender(false), 1000)
         }
         return _=> clearTimeout(hide);
-    }, [state.showDetails])
+    }, [dispatch, state.menuShrink, state.showDetails, state.showList, width])
     //changing tasks's title and description
     function handleTaskInfo(key, value){
         key === 'title' ? 

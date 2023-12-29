@@ -8,7 +8,7 @@ import image from '../assets/asset 1.png';
 import Drag from './drag';
 
 export default function Menu(){
-  const {state, dispatch} = useContext(context);
+  const {state, dispatch, width} = useContext(context);
   const [search, setSearch] = useState('');
   const oldStorage = JSON.parse(localStorage.lists);
   const searchedLists = search !== '' ? oldStorage.filter(list => list.title.toLowerCase().includes(search.toLowerCase())) : oldStorage;
@@ -16,7 +16,10 @@ export default function Menu(){
   const color = useRef();
   const input = useRef();
   //input focus when adding a list
-  useEffect(_=> { state.addList && input.current.focus() });
+  useEffect(_=> { 
+    state.addList && input.current.focus();
+    width <= 1024 && (state.showList || state.showDetails) && dispatch({type: 'menuShrink', value: true});
+   }, [dispatch, state.addList, state.showDetails, state.showList, width]);
   //create a random color
   function randomColor(){
     const letters = '0123456789ABCDEF';
@@ -24,6 +27,11 @@ export default function Menu(){
     for (let i = 0; i < 6; i++) randomColor += letters[Math.trunc(Math.random() * 16)];
     color.current = randomColor;
     return randomColor;
+  }
+  //menu shrinking
+  function handleMenuShrink(){
+    dispatch({type: 'menuShrink', value: !state.menuShrink});
+    dispatch({type: 'showDetails', value: false});
   }
   //create list
   function handleCreateList(){
@@ -54,12 +62,21 @@ export default function Menu(){
     dispatch({type: 'showList', value: false});
     dispatch({type: 'showDetails', value: false});
   }
-
+  //red dots for the hidden menu items
   return (
-      <div id="menu" className={`grid grid-rows-4 w-[23%] bg-black/[.3] rounded-lg gap-3 p-4 duration-500`}>
+      <div id="menu" className={`${state.menuShrink ? 'w-[3%]' : 'w-[23%] max-md:w-full '} grid grid-rows-4 justify-center bg-black/[.3] rounded-lg p-4 gap-3 duration-500`}>
         <div className="flex flex-col gap-4">
-          <h1 className="text-lg">to-do list</h1>
-          <div className="flex gap-2 items-center text-gray row-start-2">
+          <div className='flex justify-between items-center'>
+            <h1 className={`text-lg ${state.menuShrink && 'hidden'}`}>to-do list</h1>
+            {
+              width <= 1024 &&
+              <i 
+                onClick={handleMenuShrink} 
+                className="fa-solid fa-bars hover:cursor-pointer hover:text-gray-300 duration-200"
+              ></i>
+            }
+          </div>
+          <div className={`flex gap-2 items-center text-gray row-start-2 ${state.menuShrink && 'hidden'}`}>
             <i className="absolute p-1.5 fa-solid fa-magnifying-glass text-xs"></i>
             <input
               onChange={e=>setSearch(e.target.value)}
@@ -69,9 +86,9 @@ export default function Menu(){
             />
           </div>
         </div>
-        <div className="flex flex-col gap-3 row-start-2 row-end-5 overflow-y-auto overflow-x-hidden">
+        <div className={`flex flex-col gap-3 row-start-2 row-end-5 overflow-y-auto overflow-x-hidden ${state.menuShrink && 'hidden'}`}>
           <h1 className="text-lg">lists</h1>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             {
               localStorage.lists?.length > 0 &&
                 <Drag items={listsTitles} handleDragEnd={e=>handleDragEnd(e)}>
@@ -121,7 +138,7 @@ export default function Menu(){
             </p>
           </div>
         </div>
-        <img src={image} alt="image" className="relative top-4 row-start-5 opacity-50 rounded-lg"/>
+        <img src={image} alt="image" loading='lazy' className={`relative top-4 row-start-5 opacity-50 rounded-lg ${state.menuShrink && 'hidden'}`}/>
       </div>
   )
 }
