@@ -1,72 +1,52 @@
 /* eslint-disable no-unused-vars */
-import messages from './context/messages.json'
-import { context } from './context/context';
-import Details from './components/details';
-import Message from './components/message';
-import Menu from './components/menu';
-import List from './components/list';
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import readData from './functions/readData.jsx';
+import { context } from './context/context.jsx';
+import Details from './components/details.jsx';
+import Menu from './components/menu.jsx';
+import List from './components/list.jsx';
+import { auth } from './main.jsx';
 
 const initialState = {
-  message: '',
-  listTitle: '',
-  menuShrink: false,
-  editTitle: false,
-  addList: false,
-  showList: false,
-  showDetails: false,
-  listDelete: false,
-  task: {
-    id: '',
-    title: '',
-    description: '',
-  },
+  titles : ['this day', 'important tasks', 'tasks to do'],
+  icons : ['uil-estate', 'uil-clipboard-alt', 'uil-file-check-alt', 'uil-schedule'],
+  isSigned: false,
+  minimized: false,
+  details: false,
+  selectedTask: null,
+  selectedList: {title: "tasks to do", icon: 'uil-estate'}
 }
 
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const width = window.innerWidth;
-  //creating the lists and messages for the project
-  localStorage.lists == null && localStorage.setItem('lists', JSON.stringify([]));
-  localStorage.tips == null && localStorage.setItem('tips', JSON.stringify(messages));
-  //reducer function for variables that are used in all components
+  const [state, dispatch] = useReducer(reducer, initialState),
+  [user, setUser] = useState(null);
+  
+  useEffect(_ => onAuthStateChanged(auth, userData => userData && readData(userData, setUser)), []);
+  user && !state.isSigned && dispatch({type: 'isSigned', payload: true});
+
   function reducer(state, action){
     switch (action.type){
-      case 'message':
-        return {...state, message: action.value};
-      case 'listTitle':
-        return {...state, listTitle: action.value};
-      case 'menuShrink':
-        return {...state, menuShrink: action.value};
-      case 'editTitle':
-        return {...state, editTitle: action.value};
-      case 'addList' : 
-        return {...state, addList: action.value};
-      case 'showList' : 
-        return {...state, showList: action.value};
-      case 'showDetails':
-        return {...state, showDetails: action.value};
-      case 'listDelete':
-        return {...state, listDelete: action.value};
-      case 'taskInfo':
-        return {...state, task: action.value};
+      case 'isSigned':
+        return {...state, isSigned: action.payload}
+      case 'minimized':
+        return {...state, minimized: action.payload}
+      case 'details':
+        return {...state, details: action.payload}
+      case 'selectedTask':
+        return {...state, selectedTask: action.payload}
+      case 'selectedList':
+        return {...state, selectedList: action.payload}
     }
   }
+
   return (
-    <>
-        <div className="flex gap-4 w-full h-[100vh] bg-gradient-to-r from-[#F24B46] to-[#8224B8] text-white p-4 overflow-hidden">
-          <context.Provider value={{state, dispatch, width}}>
-            <Message 
-              key={state.message.id} 
-              message={state.message.message} 
-              duration={state.message.duration} 
-              showed={state.message.showed} 
-            />
-            <Menu />
-            <List />
-            <Details />
-          </context.Provider>
-        </div>
-    </>
+    <div className="flex bg-gradient-to-r from-[#FD416B] to-[#7A05CC] overflow-hidden h-screen">
+      <context.Provider value={[state, dispatch, user]}>
+        <Menu/>
+        { state.isSigned && <List/> }
+        { state.details && <Details/> }
+      </context.Provider>
+    </div>
   )
 }

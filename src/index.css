@@ -1,33 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kavoon&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kreon:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
-  font-family: 'Shantell Sans', cursive;
-  font-weight: 600;
-  text-shadow: 1px 2px 2px #000;
-  text-transform: capitalize;
-  scroll-behavior: smooth;
-  box-sizing: border-box;
+* :not(input){
+    font-family: 'Kreon', serif;
+    text-shadow: 1.2px 1.2px #000;
+    text-transform: capitalize;
+    color: #fff;
+    margin: 0;
+    padding: 0;
 }
-button{
-  height: fit-content;
-  border-radius: 5px;
-  padding: 5px 10px;
-  box-shadow: 1px 1px 0 #000;
-  transition: .2s;
+.kavoon, .kavoon p, .kavoon h1, li{
+    font-family: 'Kavoon', serif;
 }
-.hover:hover{
-  background-color: rgb(0, 0, 0, 0.2);
+i{
+    text-shadow: none;
+    font-size: 1.3rem;
+    transition: .3s;
 }
-/* Styling the scrollbar in Chrome & Edge */
-::-webkit-scrollbar {
-  border-radius: 15px;
-  background-color: #fff;
-  width: 5px;
+li{
+    width: 50%;
 }
-::-webkit-scrollbar-thumb {
-  background: #F24B46;
-  border-radius: 15px;
+hr{
+    border-color: #ffffff99;
+}
+.rotate{
+    transform: rotateY(180deg);
+}
+.list-when-unminimized{
+    width: calc(100% - 250px);
+}
+.list-when-minimized{
+    width: calc(100% - 60px);
+}
+
+.active {
+    background-color: rgb(0, 0, 0, .15);
+}
+.active p, .active i{
+    color: #FE426A;
 }
