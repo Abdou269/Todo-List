@@ -59,7 +59,7 @@ export default function List(){
                     <i className={`uil ${state.selectedList.icon} text-2xl`}></i> 
                     <p>{state.selectedList.title}</p>
                 </div>
-                <div className="flex flex-col gap-3 h-[90vh]">
+                <div className="flex flex-col gap-3 h-[90vh] overflow-y-auto">
                     {
                         currentList?.tasks?.length > 0 ? (
                             <>

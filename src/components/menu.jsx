@@ -65,6 +65,7 @@ export default function Menu(){
                     src={state.isSigned ? user.photoURL : guest}
                     alt="user-logo"
                     width={'40px'}
+                    height={'40px'}
                 />
                 <div className='text-sm kavoon' onClick={_=>signInWithPopup(auth, provider)}>
                     <p className={`${style} duration-300`}>
